@@ -4,6 +4,8 @@ class TicTacToe:
     def __init__(self):
         self.contadorMovimientos = 0
         self.palabras = ""
+        self.opciones = ["1 JUGADOR", "2 JUGADORES", "SALIR"]
+        self.modalidad = 0
 
         self.fichas = [" ", " "]
 
@@ -12,21 +14,49 @@ class TicTacToe:
                               [" ", " ", " "]]
 
     def jugar(self):
-        self.seleccionarFicha()
-        self.tablero()
-        self.turnos()
+        self.modalidad = self.modoDeJuego()
+
+        if(self.opciones[self.modalidad - 1] == "1 JUGADOR"):
+            self.seleccionarFicha()
+            self.tablero()
+            self.turnos()
+        elif(self.opciones[self.modalidad - 1] == "2 JUGADORES"):
+            self.seleccionarFicha()
+            self.tablero()
+            self.turnos()
+        else:
+            print("\nJUEGO TERMINADO")
+
+    def modoDeJuego(self):
+        print(F"Seleccione el siguiente numero para la modalidad:\n1 para {self.opciones[0]} \n2 para {self.opciones[1]} \n3 para {self.opciones[2]}")
+        modoSeleccion = int(input("\nMODO DE JUEGO: "))
+        if( (modoSeleccion == 1) or (modoSeleccion == 2) or (modoSeleccion == 3)):
+            return modoSeleccion
+        else:
+            self.modoDeJuego()
 
     def seleccionarFicha(self):
-        ficha = (input("Seleccione ficha X / O:\n")).upper()
-        if(ficha == "X"):
-            self.fichas[0] = "X"
-            self.fichas[1] = "O"
-        elif(ficha == "O"):
-            self.fichas[0] = "O"
-            self.fichas[1] = "X"
+        if(self.opciones[self.modalidad - 1] == "1 JUGADOR"):
+            aleatorio = random.randint(1, 10)
+            if( (aleatorio > 0) and (aleatorio < 5) ):
+                self.fichas[0] = "X"
+                self.fichas[1] = "O"
+                print("MAQUINA X")
+            else:
+                self.fichas[0] = "O"
+                self.fichas[1] = "X"
+                print("MAQUINA O")
         else:
-            print("Por favor, seleccione una ficha valida\n")
-            self.seleccionarFicha()
+            ficha = (input("Seleccione ficha X / O:\n")).upper()
+            if(ficha == "X"):
+                self.fichas[0] = "X"
+                self.fichas[1] = "O"
+            elif(ficha == "O"):
+                self.fichas[0] = "O"
+                self.fichas[1] = "X"
+            else:
+                print("Por favor, seleccione una ficha valida\n")
+                self.seleccionarFicha()
 
     def turnos(self):
         if(self.fichas[0] == "X"):
@@ -35,11 +65,12 @@ class TicTacToe:
             self.movimientoJugador2()
 
     def movimientoJugador1(self):
-        casillas = int(input(F"Seleccione casilla jugador {self.fichas[0]}: "))
-        filas = int((casillas - 1)/3)
-        columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+        if( (self.opciones[self.modalidad - 1] == "1 JUGADOR") and (self.fichas[0] == "X") ):
+            print(F"Seleccionando casilla para jugador {self.fichas[0]}: ")
+            casillas = random.randint(1, 9)
+            filas = int((casillas - 1)/3)
+            columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
 
-        if( (casillas > 0) and (casillas <10) ):
             if( (self.matrizTablero[filas][columnas]) == " "):
                 self.contadorMovimientos += 1
                 self.matrizTablero[filas][columnas] = self.fichas[0]
@@ -52,18 +83,38 @@ class TicTacToe:
                     self.movimientoJugador2()
 
             elif( (self.matrizTablero[filas][columnas] == self.fichas[0]) or (self.matrizTablero[filas][columnas] == self.fichas[1]) ):
-                print("Casilla no disponible, por favor seleccione otra\n")
                 self.movimientoJugador1()
         else:
-            print("Por favor, seleccione una casilla valida\n")
-            self.movimientoJugador1()
+            casillas = int(input(F"Seleccione casilla jugador {self.fichas[0]}: "))
+            filas = int((casillas - 1)/3)
+            columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+
+            if( (casillas > 0) and (casillas <10) ):
+                if( (self.matrizTablero[filas][columnas]) == " "):
+                    self.contadorMovimientos += 1
+                    self.matrizTablero[filas][columnas] = self.fichas[0]
+                    self.tablero()
+                    self.palabras = self.ganador(self.fichas[0], self.contadorMovimientos)
+
+                    if(self.palabras != " "):
+                        print(self.palabras)
+                    else:
+                        self.movimientoJugador2()
+
+                elif( (self.matrizTablero[filas][columnas] == self.fichas[0]) or (self.matrizTablero[filas][columnas] == self.fichas[1]) ):
+                    print("Casilla no disponible, por favor seleccione otra\n")
+                    self.movimientoJugador1()
+            else:
+                print("Por favor, seleccione una casilla valida\n")
+                self.movimientoJugador1()
 
     def movimientoJugador2(self):
-        casillas = int(input(F"Seleccione casilla jugador {self.fichas[1]}: "))
-        filas = int((casillas - 1)/3)
-        columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+        if( (self.opciones[self.modalidad - 1] == "1 JUGADOR") and (self.fichas[1] == "X")):
+            print(F"Seleccionando casilla para jugador {self.fichas[1]}: ")
+            casillas = random.randint(1, 9)
+            filas = int((casillas - 1)/3)
+            columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
 
-        if( (casillas > 0) and (casillas <10) ):
             if( (self.matrizTablero[filas][columnas]) == " "):
                 self.contadorMovimientos += 1
                 self.matrizTablero[filas][columnas] = self.fichas[1]
@@ -76,11 +127,31 @@ class TicTacToe:
                     self.movimientoJugador1()
 
             elif( (self.matrizTablero[filas][columnas] == self.fichas[0]) or (self.matrizTablero[filas][columnas] == self.fichas[1]) ):
-                print("Casilla no disponible, por favor seleccione otra\n")
                 self.movimientoJugador2()
+
         else:
-            print("Por favor, seleccione una casilla valida\n")
-            self.movimientoJugador2()
+            casillas = int(input(F"Seleccione casilla jugador {self.fichas[1]}: "))
+            filas = int((casillas - 1)/3)
+            columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+
+            if( (casillas > 0) and (casillas <10) ):
+                if( (self.matrizTablero[filas][columnas]) == " "):
+                    self.contadorMovimientos += 1
+                    self.matrizTablero[filas][columnas] = self.fichas[1]
+                    self.tablero()
+                    self.palabras = self.ganador(self.fichas[1], self.contadorMovimientos)
+
+                    if(self.palabras != " "):
+                        print(self.palabras)
+                    else:
+                        self.movimientoJugador1()
+
+                elif( (self.matrizTablero[filas][columnas] == self.fichas[0]) or (self.matrizTablero[filas][columnas] == self.fichas[1]) ):
+                    print("Casilla no disponible, por favor seleccione otra\n")
+                    self.movimientoJugador2()
+            else:
+                print("Por favor, seleccione una casilla valida\n")
+                self.movimientoJugador2()
 
     def ganador(self, fichaTurno, numeroMovimiento):
         if(numeroMovimiento == 9):
