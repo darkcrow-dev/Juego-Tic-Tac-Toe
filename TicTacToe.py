@@ -9,8 +9,7 @@ class TicTacToe:
         self.turno = False
 
     def jugar(self):
-        self.modalidad = self.modoDeJuego()
-
+        self.modoDeJuego()
         if(self.opciones[self.modalidad - 1] == "1 JUGADOR"):
             self.seleccionarNivel()
             fichas = self.seleccionarFicha()
@@ -24,16 +23,16 @@ class TicTacToe:
             print("\nJUEGO TERMINADO")
 
     def modoDeJuego(self):
-        modoSeleccion = int(input(F"Seleccione el siguiente numero para la modalidad:\n1 para {self.opciones[0]} \n2 para {self.opciones[1]} \n3 para {self.opciones[2]}\n\nMODO DE JUEGO: "))
-        if( (modoSeleccion == 1) or (modoSeleccion == 2) or (modoSeleccion == 3)):
-            return modoSeleccion
+        self.modalidad = int(input(F"Seleccione el siguiente numero para la modalidad:\n1 para {self.opciones[0]} \n2 para {self.opciones[1]} \n3 para {self.opciones[2]}\n\nMODO DE JUEGO: "))
+        if( (self.modalidad > 0) and (self.modalidad < 4) ):
+            return
         else:
             print("Por favor, seleccione una modalidad valida\n")
             self.modoDeJuego()
 
     def seleccionarNivel(self):
         self.nivel = int(input(F"\nSeleccione el siguiente numero para la dificultad:\n1 para {self.opciones[3]} \n2 para {self.opciones[4]} \n3 para {self.opciones[5]}\n\nDIFICULTAD DE JUEGO: "))
-        if( (self.nivel == 1) or (self.nivel == 2) or (self.nivel == 3)):
+        if( (self.nivel > 0) and (self.nivel < 4)):
             return
         else:
             print("Por favor, seleccione un nivel valido\n")
