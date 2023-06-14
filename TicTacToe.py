@@ -23,20 +23,30 @@ class TicTacToe:
             print("\nJUEGO TERMINADO")
 
     def modoDeJuego(self):
-        self.modalidad = int(input(F"Seleccione el siguiente numero para la modalidad:\n1 para {self.opciones[0]} \n2 para {self.opciones[1]} \n3 para {self.opciones[2]}\n\nMODO DE JUEGO: "))
-        if( (self.modalidad > 0) and (self.modalidad < 4) ):
-            return
+        seleccion = input(F"Seleccione el siguiente numero para la modalidad:\n1 para {self.opciones[0]} \n2 para {self.opciones[1]} \n3 para {self.opciones[2]}\n\nMODO DE JUEGO: ")
+        if(seleccion.isdigit() == True):
+            self.modalidad = int(seleccion)
+            if( (self.modalidad > 0) and (self.modalidad < 4) ):
+                return
+            else:
+                print("Por favor, seleccione una modalidad valida\n")
+                self.modoDeJuego()
         else:
-            print("Por favor, seleccione una modalidad valida\n")
+            print("Por favor, seleccione un numero\n")
             self.modoDeJuego()
 
     def seleccionarNivel(self):
-        self.nivel = int(input(F"\nSeleccione el siguiente numero para la dificultad:\n1 para {self.opciones[3]} \n2 para {self.opciones[4]} \n3 para {self.opciones[5]}\n\nDIFICULTAD DE JUEGO: "))
-        if( (self.nivel > 0) and (self.nivel < 4)):
-            return
+        seleccion = input(F"\nSeleccione el siguiente numero para la dificultad:\n1 para {self.opciones[3]} \n2 para {self.opciones[4]} \n3 para {self.opciones[5]}\n\nDIFICULTAD DE JUEGO: ")
+        if(seleccion.isdigit() == True):
+            self.nivel = int(seleccion)
+            if( (self.nivel > 0) and (self.nivel < 4)):
+                return
+            else:
+                print("Por favor, seleccione un nivel valido\n")
+                self.seleccionarNivel()
         else:
-            print("Por favor, seleccione un nivel valido\n")
-            self.seleccionarNivel()
+            print("Por favor, seleccione un numero\n")
+            self.modoDeJuego()
 
     def seleccionarFicha(self):
         if(self.opciones[self.modalidad - 1] == "1 JUGADOR"):
@@ -66,7 +76,7 @@ class TicTacToe:
     def turnos(self, matrizTablero, fichas):
         if( (self.opciones[self.modalidad - 1] == "1 JUGADOR") ):
             if(fichas[0] == "X"):
-                Maquina(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
+                Maquina(fichas, matrizTablero, self.contadorMovimientos, self.opciones, self.nivel, self.turno).movimientoJugador()
             else:
                 self.turno = int(not self.turno)
                 Persona1(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
@@ -75,7 +85,7 @@ class TicTacToe:
                 Persona1(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
             else:
                 self.turno = int(not self.turno)
-                Persona2(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
+                Persona2(fichas, matrizTablero, self.contadorMovimientos, self.opciones, self.nivel, self.turno).movimientoJugador()
 
 class Persona1(TicTacToe):
     def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, opciones, nivel, turno):
@@ -92,35 +102,39 @@ class Persona1(TicTacToe):
         self.turno = turno
 
     def movimientoJugador(self):
-        casillas = int(input(F"Seleccione casilla jugador {self.fichas[self.turno]}: "))
-        filas = int((casillas - 1)/3)
-        columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+        seleccion = input(F"Seleccione casilla jugador {self.fichas[self.turno]}: ")
+        if(seleccion.isdigit() == True):
+            casillas = int(seleccion)
+            if( (casillas > 0) and (casillas <10) ):
+                filas = int((casillas - 1)/3)
+                columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+                if( (self.matrizTablero[filas][columnas]) == " "):
+                    self.contadorMovimientos += 1
+                    self.matrizTablero[filas][columnas] = self.fichas[self.turno]
+                    Tablero().mostrarTablero(self.matrizTablero)
+                    self.palabras = Ganador().revisarGanador(self.fichas[self.turno], self.contadorMovimientos, self.matrizTablero)
+                    self.turno = int(not self.turno)
 
-        if( (casillas > 0) and (casillas <10) ):
-            if( (self.matrizTablero[filas][columnas]) == " "):
-                self.contadorMovimientos += 1
-                self.matrizTablero[filas][columnas] = self.fichas[self.turno]
-                Tablero().mostrarTablero(self.matrizTablero)
-                self.palabras = Ganador().revisarGanador(self.fichas[self.turno], self.contadorMovimientos, self.matrizTablero)
-                self.turno = int(not self.turno)
-
-                if(self.palabras != " "):
-                    print(self.palabras)
-                else:
-                    if( (self.opciones[self.modalidad - 1] == "1 JUGADOR") ):
-                        Maquina(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
+                    if(self.palabras != " "):
+                        print(self.palabras)
                     else:
-                        Persona2(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
+                        if( (self.opciones[self.modalidad - 1] == "1 JUGADOR") ):
+                            Maquina(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
+                        else:
+                            Persona2(self.fichas, self.matrizTablero, self.contadorMovimientos, self.opciones, self.nivel, self.turno).movimientoJugador()
 
+                else:
+                    print("Casilla no disponible, por favor seleccione otra\n")
+                    self.movimientoJugador()
             else:
-                print("Casilla no disponible, por favor seleccione otra\n")
+                print("Por favor, seleccione una casilla valida\n")
                 self.movimientoJugador()
         else:
-           print("Por favor, seleccione una casilla valida\n")
-           self.movimientoJugador()
+            print("Por favor, seleccione un numero\n")
+            self.movimientoJugador()
         
 class Persona2(TicTacToe):
-    def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, opciones, nivel, turno):
+    def __init__(self, fichas, matrizTablero, contadorMovimientos, opciones, nivel, turno):
         super().__init__()
 
         self.palabras = ""
@@ -128,39 +142,42 @@ class Persona2(TicTacToe):
         self.fichas = fichas
         self.matrizTablero = matrizTablero
         self.contadorMovimientos = contadorMovimientos
-        self.modalidad = modalidad
         self.opciones = opciones
         self.nivel = nivel
         self.turno = turno
 
     def movimientoJugador(self):
-        casillas = int(input(F"Seleccione casilla jugador {self.fichas[self.turno]}: "))
-        filas = int((casillas - 1)/3)
-        columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+        seleccion = input(F"Seleccione casilla jugador {self.fichas[self.turno]}: ")
+        if(seleccion.isdigit() == True):
+            casillas = int(seleccion)
+            if( (casillas > 0) and (casillas <10) ):
+                filas = int((casillas - 1)/3)
+                columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+                if( (self.matrizTablero[filas][columnas]) == " "):
+                    self.contadorMovimientos += 1
+                    self.matrizTablero[filas][columnas] = self.fichas[self.turno]
+                    Tablero().mostrarTablero(self.matrizTablero)
+                    self.palabras = Ganador().revisarGanador(self.fichas[self.turno], self.contadorMovimientos, self.matrizTablero)
+                    self.turno = int(not self.turno)
 
-        if( (casillas > 0) and (casillas <10) ):
-            if( (self.matrizTablero[filas][columnas]) == " "):
-                self.contadorMovimientos += 1
-                self.matrizTablero[filas][columnas] = self.fichas[self.turno]
-                Tablero().mostrarTablero(self.matrizTablero)
-                self.palabras = Ganador().revisarGanador(self.fichas[self.turno], self.contadorMovimientos, self.matrizTablero)
-                self.turno = int(not self.turno)
+                    if(self.palabras != " "):
+                        print(self.palabras)
+                    else:
+                        Persona1(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
 
-                if(self.palabras != " "):
-                    print(self.palabras)
                 else:
-                    Persona1(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
-
+                    print("Casilla no disponible, por favor seleccione otra\n")
+                    self.movimientoJugador()
             else:
-                print("Casilla no disponible, por favor seleccione otra\n")
+                print("Por favor, seleccione una casilla valida\n")
                 self.movimientoJugador()
         else:
-            print("Por favor, seleccione una casilla valida\n")
+            print("Por favor, seleccione un numero\n")
             self.movimientoJugador()
 
 
 class Maquina(TicTacToe):
-    def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, opciones, nivel, turno):
+    def __init__(self, fichas, matrizTablero, contadorMovimientos, opciones, nivel, turno):
         super().__init__()
 
         self.palabras = ""
@@ -168,7 +185,6 @@ class Maquina(TicTacToe):
         self.fichas = fichas
         self.matrizTablero = matrizTablero
         self.contadorMovimientos = contadorMovimientos
-        self.modalidad = modalidad
         self.opciones = opciones
         self.nivel = nivel
         self.turno = turno
