@@ -15,13 +15,10 @@ class TicTacToe:
             self.seleccionarNivel()
             fichas = self.seleccionarFicha()
             matrizTablero = Tablero().inicializarTablero()
-            Tablero().mostrarTablero(matrizTablero)
             self.turnos(matrizTablero, fichas)
         elif(self.opciones[self.modalidad - 1] == "2 JUGADORES"):
-            self.seleccionarFicha()
             fichas = self.seleccionarFicha()
             matrizTablero = Tablero().inicializarTablero()
-            Tablero().mostrarTablero(matrizTablero)
             self.turnos(matrizTablero, fichas)
         else:
             print("\nJUEGO TERMINADO")
@@ -29,7 +26,7 @@ class TicTacToe:
     def modoDeJuego(self):
         modoSeleccion = int(input(F"Seleccione el siguiente numero para la modalidad:\n1 para {self.opciones[0]} \n2 para {self.opciones[1]} \n3 para {self.opciones[2]}\n\nMODO DE JUEGO: "))
         if( (modoSeleccion == 1) or (modoSeleccion == 2) or (modoSeleccion == 3)):
-            return
+            return modoSeleccion
         else:
             print("Por favor, seleccione una modalidad valida\n")
             self.modoDeJuego()
