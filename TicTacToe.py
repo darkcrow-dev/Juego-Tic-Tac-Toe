@@ -53,7 +53,7 @@ class TicTacToe:
             aleatorio = random.randint(1, 10)
             if( (aleatorio > 0) and (aleatorio < 5) ):
                 fichas = ["X", "O"]
-                print("INICIA MAQUINA X\n")
+                print("INICIA MAQUINA\n")
                 return fichas
             else:
                 fichas = ["O", "X"]
@@ -76,7 +76,7 @@ class TicTacToe:
     def turnos(self, matrizTablero, fichas):
         if( (self.opciones[self.modalidad - 1] == "1 JUGADOR") ):
             if(fichas[0] == "X"):
-                Maquina(fichas, matrizTablero, self.contadorMovimientos, self.opciones, self.nivel, self.turno).movimientoJugador()
+                Maquina(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
             else:
                 self.turno = int(not self.turno)
                 Persona1(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
@@ -85,7 +85,7 @@ class TicTacToe:
                 Persona1(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
             else:
                 self.turno = int(not self.turno)
-                Persona2(fichas, matrizTablero, self.contadorMovimientos, self.opciones, self.nivel, self.turno).movimientoJugador()
+                Persona2(fichas, matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
 
 class Persona1(TicTacToe):
     def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, opciones, nivel, turno):
@@ -121,7 +121,7 @@ class Persona1(TicTacToe):
                         if( (self.opciones[self.modalidad - 1] == "1 JUGADOR") ):
                             Maquina(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
                         else:
-                            Persona2(self.fichas, self.matrizTablero, self.contadorMovimientos, self.opciones, self.nivel, self.turno).movimientoJugador()
+                            Persona2(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.opciones, self.nivel, self.turno).movimientoJugador()
 
                 else:
                     print("Casilla no disponible, por favor seleccione otra\n")
@@ -134,7 +134,7 @@ class Persona1(TicTacToe):
             self.movimientoJugador()
         
 class Persona2(TicTacToe):
-    def __init__(self, fichas, matrizTablero, contadorMovimientos, opciones, nivel, turno):
+    def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, opciones, nivel, turno):
         super().__init__()
 
         self.palabras = ""
@@ -145,6 +145,7 @@ class Persona2(TicTacToe):
         self.opciones = opciones
         self.nivel = nivel
         self.turno = turno
+        self.modalidad = modalidad
 
     def movimientoJugador(self):
         seleccion = input(F"Seleccione casilla jugador {self.fichas[self.turno]}: ")
@@ -177,7 +178,7 @@ class Persona2(TicTacToe):
 
 
 class Maquina(TicTacToe):
-    def __init__(self, fichas, matrizTablero, contadorMovimientos, opciones, nivel, turno):
+    def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, opciones, nivel, turno):
         super().__init__()
 
         self.palabras = ""
@@ -188,6 +189,7 @@ class Maquina(TicTacToe):
         self.opciones = opciones
         self.nivel = nivel
         self.turno = turno
+        self.modalidad = modalidad
 
     def movimientoJugador(self):
         if(self.opciones[self.nivel + 2] == "FACIL"):
