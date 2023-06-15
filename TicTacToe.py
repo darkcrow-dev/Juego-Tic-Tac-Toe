@@ -26,57 +26,6 @@ class TicTacToe:
         else:
             print("\nJUEGO TERMINADO")
 
-    def modoDeJuego(self):
-        seleccion = input(F"Seleccione el siguiente numero para la modalidad:\n1 para {self.opciones[0]} \n2 para {self.opciones[1]} \n3 para {self.opciones[2]}\n\nMODO DE JUEGO: ")
-        if(seleccion.isdigit() == True):
-            self.modalidad = int(seleccion)
-            if( (self.modalidad > 0) and (self.modalidad < 4) ):
-                return
-            else:
-                print("Por favor, seleccione una modalidad valida\n")
-                self.modoDeJuego()
-        else:
-            print("Por favor, seleccione un numero\n")
-            self.modoDeJuego()
-
-    def seleccionarNivel(self):
-        seleccion = input(F"\nSeleccione el siguiente numero para la dificultad:\n1 para {self.opciones[3]} \n2 para {self.opciones[4]} \n3 para {self.opciones[5]}\n\nDIFICULTAD DE JUEGO: ")
-        if(seleccion.isdigit() == True):
-            self.nivel = int(seleccion)
-            if( (self.nivel > 0) and (self.nivel < 4)):
-                return
-            else:
-                print("Por favor, seleccione un nivel valido\n")
-                self.seleccionarNivel()
-        else:
-            print("Por favor, seleccione un numero\n")
-            self.modoDeJuego()
-
-    def seleccionarFicha(self):
-        if(self.opciones[self.modalidad - 1] == "1 JUGADOR"):
-            aleatorio = random.randint(1, 10)
-            if( (aleatorio > 0) and (aleatorio < 5) ):
-                fichas = ["X", "O"]
-                print("INICIA MAQUINA\n")
-                return fichas
-            else:
-                fichas = ["O", "X"]
-                print("INICIA JUGADOR 1\n")
-                return fichas
-        else:
-            ficha = (input("Seleccione ficha X / O:\n")).upper()
-            if(ficha == "X"):
-                fichas = ["X", "O"]
-                print("INICIA JUGADOR 1\n")
-                return fichas
-            elif(ficha == "O"):
-                fichas = ["O", "X"]
-                print("INICIA JUGADOR 2\n")
-                return fichas
-            else:
-                print("Por favor, seleccione una ficha valida\n")
-                self.seleccionarFicha()
-
     def turnos(self, matrizTablero, fichas, modalidad, nivel):
         if( (modalidad == "1 JUGADOR") ):
             if(fichas[0] == "X"):
