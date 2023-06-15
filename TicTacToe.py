@@ -62,8 +62,8 @@ class Persona1(TicTacToe):
                     self.contadorMovimientos += 1
                     self.matrizTablero[filas][columnas] = self.fichas[self.turno]
                     Tablero().mostrarTablero(self.matrizTablero)
-                    ganador = Ganador()
-                    ganador.revisarGanador(self.fichas[self.turno], self.contadorMovimientos, self.matrizTablero)
+                    ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
+                    ganador.revisarGanador()
                     palabras = ganador.palabras
                     self.turno = int(not self.turno)
 
@@ -107,8 +107,8 @@ class Persona2(TicTacToe):
                     self.contadorMovimientos += 1
                     self.matrizTablero[filas][columnas] = self.fichas[self.turno]
                     Tablero().mostrarTablero(self.matrizTablero)
-                    ganador = Ganador()
-                    ganador.revisarGanador(self.fichas[self.turno], self.contadorMovimientos, self.matrizTablero)
+                    ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
+                    ganador.revisarGanador()
                     palabras = ganador.palabras
                     self.turno = int(not self.turno)
 
@@ -157,8 +157,8 @@ class Maquina(TicTacToe):
             self.contadorMovimientos += 1
             self.matrizTablero[filas][columnas] = self.fichas[self.turno]
             Tablero().mostrarTablero(self.matrizTablero)
-            ganador = Ganador()
-            ganador.revisarGanador(self.fichas[self.turno], self.contadorMovimientos, self.matrizTablero)
+            ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
+            ganador.revisarGanador()
             palabras = ganador.palabras
             self.turno = int(not self.turno)
 
@@ -177,37 +177,41 @@ class Maquina(TicTacToe):
         pass
 
 class Ganador(TicTacToe):
-    def __init__(self):
+    def __init__(self, fichas, matrizTablero, numeroMovimiento, turno):
         super().__init__()
         self.palabras = ""
+        self.fichas = fichas
+        self.matrizTablero = matrizTablero
+        self.numeroMovimiento = numeroMovimiento
+        self.turno = turno
 
-    def revisarGanador(self, fichaTurno, numeroMovimiento, matrizTablero):
-        self.revisarFilas(fichaTurno, matrizTablero)
-        if( (self.palabras == " ") and (numeroMovimiento == 9) ):
+    def revisarGanador(self):
+        self.revisarFilas()
+        if( (self.palabras == " ") and (self.numeroMovimiento == 9) ):
             self.palabras = "Juego empatado"
         return
 
-    def revisarFilas(self, jugador, matrizTablero):
+    def revisarFilas(self):
         for i in range(0, 3):
-            if(matrizTablero[i][0] == matrizTablero[i][1] == matrizTablero[i][2] == jugador):
-                self.palabras = F"Juego ganado por {jugador}"
+            if(self.matrizTablero[i][0] == self.matrizTablero[i][1] == self.matrizTablero[i][2] == self.fichas[int(self.turno)]):
+                self.palabras = F"Juego ganado por {self.fichas[int(self.turno)]}"
                 return
 
-        return self.revisarColumnas(jugador, matrizTablero)
+        return self.revisarColumnas()
 
-    def revisarColumnas(self, jugador, matrizTablero):
+    def revisarColumnas(self):
         for i in range(0, 3):
-            if(matrizTablero[0][i] == matrizTablero[1][i] == matrizTablero[2][i] == jugador):
-                self.palabras = F"Juego ganado por {jugador}"
+            if(self.matrizTablero[0][i] == self.matrizTablero[1][i] == self.matrizTablero[2][i] == self.fichas[int(self.turno)]):
+                self.palabras = F"Juego ganado por {self.fichas[int(self.turno)]}"
                 return
-        return self.revisarDiagonales(jugador, matrizTablero)
+        return self.revisarDiagonales()
 
-    def revisarDiagonales(self, jugador, matrizTablero):
-        if(matrizTablero[0][0] == matrizTablero[1][1] == matrizTablero[2][2] == jugador):
-            self.palabras = F"Juego ganado por {jugador}"
+    def revisarDiagonales(self):
+        if(self.matrizTablero[0][0] == self.matrizTablero[1][1] == self.matrizTablero[2][2] == self.fichas[int(self.turno)]):
+            self.palabras = F"Juego ganado por {self.fichas[int(self.turno)]}"
             return
-        elif(matrizTablero[2][0] == matrizTablero[1][1] == matrizTablero[0][2] == jugador):
-            self.palabras = F"Juego ganado por {jugador}"
+        elif(self.matrizTablero[2][0] == self.matrizTablero[1][1] == self.matrizTablero[0][2] == self.fichas[int(self.turno)]):
+            self.palabras = F"Juego ganado por {self.fichas[int(self.turno)]}"
             return
         else:
             self.palabras = " "
