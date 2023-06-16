@@ -29,16 +29,16 @@ class TicTacToe:
     def turnos(self, matrizTablero, fichas, modalidad, nivel):
         if( (modalidad == "1 JUGADOR") ):
             if(fichas[0] == "X"):
-                Maquina(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).movimientoJugador()
+                Maquina(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).seleccionarCasilla()
             else:
                 self.turno = int(not self.turno)
-                Persona1(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).movimientoJugador()
+                Persona1(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).seleccionarCasilla()
         else:
             if(fichas[0] == "X"):
-                Persona1(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).movimientoJugador()
+                Persona1(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).seleccionarCasilla()
             else:
                 self.turno = int(not self.turno)
-                Persona2(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).movimientoJugador()
+                Persona2(fichas, matrizTablero, self.contadorMovimientos, modalidad, nivel, self.turno).seleccionarCasilla()
 
 class Persona1(TicTacToe):
     def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, nivel, turno):
@@ -50,40 +50,45 @@ class Persona1(TicTacToe):
         self.modalidad = modalidad
         self.nivel = nivel
         self.turno = turno
+        
+        self.filas = 0
+        self.columnas = 0
 
-    def movimientoJugador(self):
+    def seleccionarCasilla(self):
         seleccion = input(F"Seleccione casilla jugador {self.fichas[self.turno]}: ")
         if(seleccion.isdigit() == True):
             casillas = int(seleccion)
-            if( (casillas > 0) and (casillas <10) ):
-                filas = int((casillas - 1)/3)
-                columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
-                if( (self.matrizTablero[filas][columnas]) == " "):
-                    self.contadorMovimientos += 1
-                    self.matrizTablero[filas][columnas] = self.fichas[self.turno]
-                    Tablero().mostrarTablero(self.matrizTablero)
-                    ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
-                    ganador.revisarGanador()
-                    palabras = ganador.palabras
-                    self.turno = int(not self.turno)
-
-                    if(palabras != " "):
-                        print(palabras)
-                    else:
-                        if( (self.modalidad == "1 JUGADOR") ):
-                            Maquina(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).movimientoJugador()
-                        else:
-                            Persona2(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).movimientoJugador()
-
+            if( (casillas > 0) and (casillas < 10) ):
+                self.filas = int((casillas - 1)/3)
+                self.columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+                if( (self.matrizTablero[self.filas][self.columnas]) == " "):
+                    self.movimientoJugador()
                 else:
                     print("Casilla no disponible, por favor seleccione otra\n")
-                    self.movimientoJugador()
+                    self.seleccionarCasilla()
             else:
                 print("Por favor, seleccione una casilla valida\n")
-                self.movimientoJugador()
+                self.seleccionarCasilla()
         else:
             print("Por favor, seleccione un numero\n")
-            self.movimientoJugador()
+            self.seleccionarCasilla()
+
+    def movimientoJugador(self):
+        self.contadorMovimientos += 1
+        self.matrizTablero[self.filas][self.columnas] = self.fichas[self.turno]
+        Tablero().mostrarTablero(self.matrizTablero)
+        ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
+        ganador.revisarGanador()
+        palabras = ganador.palabras
+        self.turno = int(not self.turno)
+
+        if(palabras != " "):
+            print(palabras)
+        else:
+            if( (self.modalidad == "1 JUGADOR") ):
+                Maquina(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).seleccionarCasilla()
+            else:
+                Persona2(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).seleccionarCasilla()
         
 class Persona2(TicTacToe):
     def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, nivel, turno):
@@ -96,37 +101,41 @@ class Persona2(TicTacToe):
         self.turno = turno
         self.modalidad = modalidad
 
-    def movimientoJugador(self):
+        self.filas = 0
+        self.columnas = 0
+
+    def seleccionarCasilla(self):
         seleccion = input(F"Seleccione casilla jugador {self.fichas[self.turno]}: ")
         if(seleccion.isdigit() == True):
             casillas = int(seleccion)
-            if( (casillas > 0) and (casillas <10) ):
-                filas = int((casillas - 1)/3)
-                columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
-                if( (self.matrizTablero[filas][columnas]) == " "):
-                    self.contadorMovimientos += 1
-                    self.matrizTablero[filas][columnas] = self.fichas[self.turno]
-                    Tablero().mostrarTablero(self.matrizTablero)
-                    ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
-                    ganador.revisarGanador()
-                    palabras = ganador.palabras
-                    self.turno = int(not self.turno)
-
-                    if(palabras != " "):
-                        print(palabras)
-                    else:
-                        Persona1(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).movimientoJugador()
-
+            if( (casillas > 0) and (casillas < 10) ):
+                self.filas = int((casillas - 1)/3)
+                self.columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+                if( (self.matrizTablero[self.filas][self.columnas]) == " "):
+                    self.movimientoJugador()
                 else:
                     print("Casilla no disponible, por favor seleccione otra\n")
-                    self.movimientoJugador()
+                    self.seleccionarCasilla()
             else:
                 print("Por favor, seleccione una casilla valida\n")
-                self.movimientoJugador()
+                self.seleccionarCasilla()
         else:
             print("Por favor, seleccione un numero\n")
-            self.movimientoJugador()
+            self.seleccionarCasilla()
 
+    def movimientoJugador(self):
+        self.contadorMovimientos += 1
+        self.matrizTablero[self.filas][self.columnas] = self.fichas[self.turno]
+        Tablero().mostrarTablero(self.matrizTablero)
+        ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
+        ganador.revisarGanador()
+        palabras = ganador.palabras
+        self.turno = int(not self.turno)
+
+        if(palabras != " "):
+            print(palabras)
+        else:
+            Persona1(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).seleccionarCasilla()
 
 class Maquina(TicTacToe):
     def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, nivel, turno):
@@ -139,42 +148,177 @@ class Maquina(TicTacToe):
         self.turno = turno
         self.modalidad = modalidad
 
-    def movimientoJugador(self):
+        self.filas = 0
+        self.columnas = 0
+
+    def seleccionarCasilla(self):
+        print(F"Seleccionando casilla para jugador {self.fichas[self.turno]}: ")
         if(self.nivel == "FACIL"):
-            print(F"Seleccionando casilla para jugador {self.fichas[self.turno]}: ")
             self.nivel1()
         elif(self.nivel == "INTERMEDIO"):
             self.nivel2()
         else:
             self.nivel3()
 
-    def nivel1(self):
-        casillas = random.randint(1, 9)
-        filas = int((casillas - 1)/3)
-        columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+    def movimientoJugador(self):
+        self.contadorMovimientos += 1
+        self.matrizTablero[self.filas][self.columnas] = self.fichas[self.turno]
+        Tablero().mostrarTablero(self.matrizTablero)
+        ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
+        ganador.revisarGanador()
+        palabras = ganador.palabras
+        self.turno = int(not self.turno)
 
-        if( (self.matrizTablero[filas][columnas]) == " "):
-            self.contadorMovimientos += 1
-            self.matrizTablero[filas][columnas] = self.fichas[self.turno]
-            Tablero().mostrarTablero(self.matrizTablero)
-            ganador = Ganador(self.fichas, self.matrizTablero, self.contadorMovimientos, self.turno)
-            ganador.revisarGanador()
-            palabras = ganador.palabras
-            self.turno = int(not self.turno)
-
-            if(palabras != " "):
-                print(palabras)
-            else:
-                Persona1(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).movimientoJugador()
-
+        if(palabras != " "):
+            print(palabras)
         else:
-            self.nivel1()
+            Persona1(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno).seleccionarCasilla()
+
+    def nivel1(self):
+        ataque = Ataque(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno)
+        ataque.aleatorio()
+        self.filas = ataque.filas
+        self.columnas = ataque.columnas
+        self.movimientoJugador()
 
     def nivel2(self):
-        pass
+        ataque = Ataque(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno)
+        ataque.revisarFilas()
+        self.filas = ataque.filas
+        self.columnas = ataque.columnas
+
+        if( (self.filas == -1) and (self.columnas == -1) ):
+            defensa = Defensa(self.fichas, self.matrizTablero, self.contadorMovimientos, self.modalidad, self.nivel, self.turno)
+            defensa.revisarFilas()
+            self.filas = defensa.filas
+            self.columnas = defensa.columnas
+
+            if( (self.filas == -1) and (self.columnas == -1) ):
+                ataque.aleatorio()
+                self.filas = ataque.filas
+                self.columnas = ataque.columnas
+                self.movimientoJugador()
+            else:
+                self.movimientoJugador()
+        else:
+            self.movimientoJugador()
 
     def nivel3(self):
         pass
+
+class Ataque(Maquina):
+    def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, nivel, turno):
+        super().__init__(fichas, matrizTablero, contadorMovimientos, modalidad, nivel, turno)
+        self.filas = -1
+        self.columnas = -1
+
+    def aleatorio(self):
+        casillas = random.randint(1, 9)
+        self.filas = int((casillas - 1)/3)
+        self.columnas = (casillas - 3*(int((casillas - 1)/3))) - 1
+
+        if( (self.matrizTablero[self.filas][self.columnas]) == " "):
+            return
+        else:
+            self.aleatorio()
+
+    def revisarFilas(self):
+        for i in range(0, 3):
+            if( ((self.matrizTablero[i][0] == self.matrizTablero[i][1] == self.fichas[int(self.turno)]) and (self.matrizTablero[i][2] == " ")) or 
+                ((self.matrizTablero[i][0] == self.matrizTablero[i][2] == self.fichas[int(self.turno)]) and (self.matrizTablero[i][1] == " ")) or
+                ((self.matrizTablero[i][1] == self.matrizTablero[i][2] == self.fichas[int(self.turno)]) and (self.matrizTablero[i][0] == " "))):
+                for j in range(0, 3):
+                    if(self.matrizTablero[i][j] == " "):
+                        self.filas = i
+                        self.columnas = j
+                        return
+        return self.revisarColumnas()
+
+    def revisarColumnas(self):
+        for i in range(0, 3):
+            if( ((self.matrizTablero[0][i] == self.matrizTablero[1][i] == self.fichas[int(self.turno)]) and (self.matrizTablero[2][i] == " ")) or 
+                ((self.matrizTablero[0][i] == self.matrizTablero[2][i] == self.fichas[int(self.turno)]) and (self.matrizTablero[1][i] == " ")) or
+                ((self.matrizTablero[1][i] == self.matrizTablero[2][i] == self.fichas[int(self.turno)]) and (self.matrizTablero[0][i] == " "))):
+                for j in range(0, 3):
+                    if(self.matrizTablero[j][i] == " "):
+                        self.filas = j
+                        self.columnas = i
+                        return
+        return self.revisarDiagonales()
+
+    def revisarDiagonales(self):
+        if( ((self.matrizTablero[0][0] == self.matrizTablero[1][1] == self.fichas[int(self.turno)]) and (self.matrizTablero[2][2] == " ")) or
+            ((self.matrizTablero[0][0] == self.matrizTablero[2][2] == self.fichas[int(self.turno)]) and (self.matrizTablero[1][1] == " ")) or
+            ((self.matrizTablero[1][1] == self.matrizTablero[2][2] == self.fichas[int(self.turno)]) and (self.matrizTablero[0][0] == " "))):
+            for i in range(0, 3):
+                if(self.matrizTablero[i][i] == " "):
+                    self.filas = i
+                    self.columnas = i
+                    return
+        elif( ((self.matrizTablero[0][2] == self.matrizTablero[1][1] == self.fichas[int(self.turno)]) and (self.matrizTablero[2][0] == " ")) or 
+              ((self.matrizTablero[0][2] == self.matrizTablero[2][0] == self.fichas[int(self.turno)]) and (self.matrizTablero[1][1] == " ")) or
+              ((self.matrizTablero[1][1] == self.matrizTablero[2][0] == self.fichas[int(self.turno)]) and (self.matrizTablero[0][2] == " "))):
+            for i in range(0, 3):
+                if(self.matrizTablero[i][2 - i] == " "):
+                    self.filas = i
+                    self.columnas = 2 - i
+                    return
+        else:
+            self.filas = -1
+            self.columnas = -1
+            return
+
+class Defensa(Maquina):
+    def __init__(self, fichas, matrizTablero, contadorMovimientos, modalidad, nivel, turno):
+        super().__init__(fichas, matrizTablero, contadorMovimientos, modalidad, nivel, turno)
+        self.filas = -1
+        self.columnas = -1
+
+    def revisarFilas(self):
+        for i in range(0, 3):
+            if( ((self.matrizTablero[i][0] == self.matrizTablero[i][1] == self.fichas[int(not self.turno)]) and (self.matrizTablero[i][2] == " ")) or 
+                ((self.matrizTablero[i][0] == self.matrizTablero[i][2] == self.fichas[int(not self.turno)]) and (self.matrizTablero[i][1] == " ")) or
+                ((self.matrizTablero[i][1] == self.matrizTablero[i][2] == self.fichas[int(not self.turno)]) and (self.matrizTablero[i][0] == " "))):
+                for j in range(0, 3):
+                    if(self.matrizTablero[i][j] == " "):
+                        self.filas = i
+                        self.columnas = j
+                        return
+        return self.revisarColumnas()
+
+    def revisarColumnas(self):
+        for i in range(0, 3):
+            if( ((self.matrizTablero[0][i] == self.matrizTablero[1][i] == self.fichas[int(not self.turno)]) and (self.matrizTablero[2][i] == " ")) or 
+                ((self.matrizTablero[0][i] == self.matrizTablero[2][i] == self.fichas[int(not self.turno)]) and (self.matrizTablero[1][i] == " ")) or
+                ((self.matrizTablero[1][i] == self.matrizTablero[2][i] == self.fichas[int(not self.turno)]) and (self.matrizTablero[0][i] == " "))):
+                for j in range(0, 3):
+                    if(self.matrizTablero[j][i] == " "):
+                        self.filas = j
+                        self.columnas = i
+                        return
+        return self.revisarDiagonales()
+
+    def revisarDiagonales(self):
+        if( ((self.matrizTablero[0][0] == self.matrizTablero[1][1] == self.fichas[int(not self.turno)]) and (self.matrizTablero[2][2] == " ")) or 
+            ((self.matrizTablero[0][0] == self.matrizTablero[2][2] == self.fichas[int(not self.turno)]) and (self.matrizTablero[1][1] == " ")) or
+            ((self.matrizTablero[1][1] == self.matrizTablero[2][2] == self.fichas[int(not self.turno)]) and (self.matrizTablero[0][0] == " "))):
+            for i in range(0, 3):
+                if(self.matrizTablero[i][i] == " "):
+                    self.filas = i
+                    self.columnas = i
+                    return
+        elif( ((self.matrizTablero[0][2] == self.matrizTablero[1][1] == self.fichas[int(not self.turno)]) and (self.matrizTablero[2][0] == " ")) or 
+              ((self.matrizTablero[0][2] == self.matrizTablero[2][0] == self.fichas[int(not self.turno)]) and (self.matrizTablero[1][1] == " ")) or
+              ((self.matrizTablero[1][1] == self.matrizTablero[2][0] == self.fichas[int(not self.turno)]) and (self.matrizTablero[0][2] == " "))):
+            for i in range(0, 3):
+                if(self.matrizTablero[i][2 - i] == " "):
+                    self.filas = i
+                    self.columnas = 2 - i
+                    return
+        else:
+            self.filas = -1
+            self.columnas = -1
+            return
 
 class Ganador(TicTacToe):
     def __init__(self, fichas, matrizTablero, numeroMovimiento, turno):
