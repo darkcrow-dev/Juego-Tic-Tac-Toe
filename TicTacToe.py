@@ -443,22 +443,18 @@ class Menu(TicTacToe):
             aleatorio = random.randint(1, 10)
             if( (aleatorio > 0) and (aleatorio < 5) ):
                 self.fichas = ["X", "O"]
-                print("INICIA MAQUINA\n")
-                return
+                return print("INICIA MAQUINA\n")
             else:
                 self.fichas = ["O", "X"]
-                print("INICIA JUGADOR 1\n")
-                return
+                return print("INICIA JUGADOR 1\n")
         else:
             ficha = (input("Seleccione ficha X / O:\n")).upper()
             if(ficha == "X"):
                 self.fichas = ["X", "O"]
-                print("INICIA JUGADOR 1\n")
-                return
+                return print("INICIA JUGADOR 1\n")
             elif(ficha == "O"):
                 self.fichas = ["O", "X"]
-                print("INICIA JUGADOR 2\n")
-                return
+                return print("INICIA JUGADOR 2\n")
             else:
                 print("Por favor, seleccione una ficha valida\n")
                 return self.seleccionarFicha()
