@@ -534,7 +534,7 @@ class Menu(TicTacToe):
 
     def seleccionarFicha(self):
         if(self.modalidad == "1 JUGADOR"):
-            aleatorio = random.randint(1, 10)
+            aleatorio = random.randint(0, 10)
             if( (aleatorio >= 0) and (aleatorio <= 5) ):
                 self.fichas = ["X", "O"]
                 return print("INICIA MAQUINA\n")
