@@ -2,10 +2,10 @@ import random
 
 class TicTacToe:
     def __init__(self):
-        self.numeroMovimientos = 0
-        self.turno = False
+        pass
 
     def jugar(self):
+        print("BIENVENIDO AL JUEGO TIC TAC TOE\n")
         seleccion = Menu()
         seleccion.seleccionarModoDeJuego()
 
@@ -26,16 +26,18 @@ class TicTacToe:
             return print("\nJUEGO TERMINADO")
 
     def turnos(self, matrizTablero, fichas, modalidad, nivel):
+        numeroMovimientos = 0
+        turno = False
         if( (modalidad == "1 JUGADOR") ):
             if(fichas[0] == "X"):
-                return Maquina().seleccionarCasilla(fichas, matrizTablero, self.numeroMovimientos, modalidad, nivel, self.turno)
+                return Maquina().seleccionarCasilla(fichas, matrizTablero, numeroMovimientos, modalidad, nivel, turno)
             else:
-                return Persona1().seleccionarCasilla(fichas, matrizTablero, self.numeroMovimientos, modalidad, nivel, not self.turno)
+                return Persona1().seleccionarCasilla(fichas, matrizTablero, numeroMovimientos, modalidad, nivel, not turno)
         else:
             if(fichas[0] == "X"):
-                return Persona1().seleccionarCasilla(fichas, matrizTablero, self.numeroMovimientos, modalidad, nivel, self.turno)
+                return Persona1().seleccionarCasilla(fichas, matrizTablero, numeroMovimientos, modalidad, nivel, turno)
             else:
-                return Persona2().seleccionarCasilla(fichas, matrizTablero, self.numeroMovimientos, modalidad, nivel, not self.turno)
+                return Persona2().seleccionarCasilla(fichas, matrizTablero, numeroMovimientos, modalidad, nivel, not turno)
 
 class Persona1(TicTacToe):
     def __init__(self):
