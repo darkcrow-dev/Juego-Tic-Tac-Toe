@@ -1,6 +1,7 @@
 # Juego-Tic-Tac-Toe
 
 Clásico juego de tic tac toe de 3x3 con un menú con difentes modos del juego a elegir al inicio, los cuales son:
+
   -Modo 1 jugador: Si el jugador elige este modo puede jugar contra la máquina y sus diferentes niveles, el nivel fácil, el intermedio y el difícil.
                    -En el modo fácil la computadora hace movimientos aleatorios.
                    -En el modo intermedio la computadora hace movimientos aleatorios y también es capaz de defenderse si el jugador intenta lograr colocar
