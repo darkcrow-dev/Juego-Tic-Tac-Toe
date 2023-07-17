@@ -9,7 +9,7 @@ Clásico juego de tic tac toe de 3x3 con un menú con difentes modos del juego a
       <li>En el modo fácil la computadora hace movimientos aleatorios.</li>
     </p>
     <p>
-      <li>En el modo intermedio la computadora hace movimientos aleatorios y también es capaz de defenderse si el jugador intenta lograr colocar dos fichas iguales en la misma linea, columna o diagonal o tratar de ganar el juego si la máquina coloca dos fichas iguales en la misma linea, columna o diagonal.</li>
+      <li>En el modo intermedio la computadora hace movimientos aleatorios y también es capaz de defenderse si el jugador intenta lograr colocar dos fichas iguales en la misma linea, columna o diagonal o capaz de ganar si la computadora coloca dos fichas iguales en la misma linea, columna o diagonal.</li>
     </p>
     <p>
       <li>En el modo difícil la computadora utiliza un algoritmo de IA llamado minimax junto con la poda alfa beta para analizar y obtener el mejor movimiento para jugar contra el usario.</li>
